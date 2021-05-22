@@ -63,9 +63,11 @@ class Lifecycle:
             else:
                 ''' Queue item is video. '''
                 trackFile = f'{server.queue[server.queueIndex]["id"]}.webm'
+            FFMPEG_OPTS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+            url = await YouTube().fetchURL(server.queue[server.queueIndex], 251)
             try:
                 server.voiceConnection.play(
-                    discord.FFmpegOpusAudio(trackFile),
+                    discord.FFmpegOpusAudio(url, **FFMPEG_OPTS),
                     after = lambda exception: asyncio.run_coroutine_threadsafe(
                         Commands.listenUpdates(), Commands.bot.loop
                     ),
@@ -75,7 +77,7 @@ class Lifecycle:
                 try:
                     server.stop()
                     server.voiceConnection.play(
-                        discord.FFmpegOpusAudio(trackFile),
+                        discord.FFmpegOpusAudio(url, **FFMPEG_OPTS),
                         after = lambda exception: asyncio.run_coroutine_threadsafe(
                             Commands.listenUpdates(), Commands.bot.loop
                         ),

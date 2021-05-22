@@ -3,9 +3,7 @@ import asyncio
 from source.method import Method
 from constants import Constants
 
-
 class Embed:
-
     async def nowPlaying(self, context, track):
         if 'trackName' in track.keys():
             await self.__createEmbed(

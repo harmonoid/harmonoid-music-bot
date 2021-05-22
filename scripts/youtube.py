@@ -8,6 +8,14 @@ from youtubesearchpython import Video, StreamURLFetcher
 class YouTube:
     def __init__(self):
         self.streamURL = StreamURLFetcher()
+    
+    async def VideoGet(self, url):
+        video = await Video.get(url)
+        return video
+    
+    async def fetchURL(self, video, id):
+        url = await self.streamURL.get(video, id)
+        return url
 
     async def download(self, videoName: str) -> dict:
         if 'youtu' not in videoName:
